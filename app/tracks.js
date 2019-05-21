@@ -9,11 +9,8 @@ router.get('/', (req, res) => {
 		query = {
 			album: req.query.album
 		};
-	} else if (req.query.artist) {
-		query = {
-			"album.artist._id": req.query.artist
-		};
 	}
+
 	Track.find(query)
 		.populate({
 		path: 'album',

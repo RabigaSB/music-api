@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
-const Schema = new mongoose.Schema;
+const Schema = mongoose.Schema;
 
 
-const TrackHistorySchema = Schema({
+const TrackHistorySchema = new Schema({
 	userId: {
 		type: Schema.Types.ObjectId,
 		ref: 'User',

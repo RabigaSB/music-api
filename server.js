@@ -19,7 +19,7 @@ mongoose.connect('mongodb://localhost/music', {useNewUrlParser: true})
 		app.use('/albums', albums);
 		app.use('/tracks', tracks);
 		app.use('/users', users());
-		app.use('/trackHistory', trackHistory());
+		app.use('/track_history', trackHistory());
 
 		app.listen(PORT, () => {
 			console.log(`Server is running at ${PORT} port`)

@@ -1,0 +1,45 @@
+const express = require('express');
+const router = express.Router();
+const Artist = require('../models/Artist');
+const nanoid = require('nanoid');
+
+const multer = require('multer');
+const path = require('path');
+const config = require('../config');
+
+const storage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, config.uploadPath)
+	},
+	filename: (req, file, cb) => {
+		cb(null, nanoid() + path.extname(file.originalname))
+	}
+});
+
+const upload = multer({storage});
+
+router.get('/', (req, res) => {
+	Artist.find()
+		.then(results => {
+			res.send(results);
+		})
+		.catch(() => res.sendStatus(500));
+});
+
+router.post('/', upload.single('image'), (req, res) => {
+	console.log('post artists');
+	if (req.file) {
+		req.body.image = req.file.filename;
+	}
+	else req.body.image = null;
+
+
+	const artist = new Artist(req.body);
+	artist.save()
+		.then(result => res.send(result))
+		.catch(error => res.status(400).send(error));
+
+
+});
+
+module.exports = router;

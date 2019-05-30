@@ -26,7 +26,7 @@ router.get('/', (req, res) => {
 			artist: req.query.artist
 		};
 	}
-	Album.find(query).populate('artist')
+	Album.find(query).sort({year: 1}).populate('artist')
 		.then(results => {
 			res.send(results);
 		})
@@ -42,7 +42,7 @@ router.get('/:id', (req, res) => {
 		.catch(() => res.sendStatus(500));
 });
 
-router.post('/',upload.single('image'), (req, res) => {
+router.post('/', upload.single('image'), (req, res) => {
 	if (req.file) {
 		req.body.image = req.file.filename;
 	}

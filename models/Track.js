@@ -12,7 +12,10 @@ const TrackSchema = new Schema({
 		ref: 'Album',
 		required: true
 	},
-	length: String
+	length: String,
+	trackNumber: {
+
+	}
 });
 
 const Track = mongoose.model('Track', TrackSchema);

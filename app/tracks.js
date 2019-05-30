@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
 		};
 	}
 
-	Track.find(query)
+	Track.find(query).sort({trackNumber: 1})
 		.populate({
 		path: 'album',
 		populate: {

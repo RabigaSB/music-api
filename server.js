@@ -12,6 +12,7 @@ const trackHistory = require('./app/trackHistory');
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static('public'));
 
 mongoose.connect('mongodb://localhost/music', {useNewUrlParser: true})
 	.then(() => {

@@ -3,6 +3,7 @@ const app = express();
 const PORT = 8000;
 const cors = require('cors');
 const mongoose = require('mongoose');
+const config = require('./config');
 
 const artists = require('./app/artists');
 const albums = require('./app/albums');
@@ -14,7 +15,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
-mongoose.connect('mongodb://localhost/music', {useNewUrlParser: true})
+mongoose.connect(config.getDbPath(), {useNewUrlParser: true})
 	.then(() => {
 		app.use('/artists', artists);
 		app.use('/albums', albums);

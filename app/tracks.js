@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Track = require('../models/Track');
+const auth = require('../middlewares/auth');
 
 
-router.get('/', (req, res) => {
+
+router.get('/', auth, (req, res) => {
 	let query = null;
 	if (req.query.album) {
 		query = {

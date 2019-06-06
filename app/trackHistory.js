@@ -2,17 +2,32 @@ const express =require('express');
 const router = express.Router();
 const TrackHistory = require('../models/TrackHistory');
 const User = require('../models/User');
+const auth = require('../middlewares/auth');
 
 
 const createRouter = () => {
-	router.post('/', async (req, res) => {
-		console.log(req.get('Token'));
+	router.get('/', auth, async (req, res) => {
+		const token = req.get('Authorization');
+		const user = await User.findOne({token});
 
-		if (!req.get('Token')) return res.status(401).send("Unauthorized");
+		TrackHistory.find({userId: user}).sort({datetime: -1})
+			.populate({
+				path: 'userId',
+				model: 'User'
+			})
+			.populate({
+				path: 'trackId',
+				model: 'Track'
+			})
+			.then(results => {
+				res.send(results);
+			})
+			.catch(() => res.sendStatus(500));
+	});
 
-		const user = await User.findOne({token: req.get('Token')});
-
-		if (!user) return res.status(401).send("User not authorized!");
+	router.post('/', auth, async (req, res) => {
+		const token = req.get('Authorization');
+		const user = await User.findOne({token});
 
 		const trackHistoryData = req.body;
 		trackHistoryData.userId = user;
@@ -24,8 +39,6 @@ const createRouter = () => {
 			.then(result => res.send(result))
 			.catch(error => res.status(400).send(error));
 	});
-
-
 
 	return router;
 };

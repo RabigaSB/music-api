@@ -17,7 +17,13 @@ const createRouter = () => {
 			})
 			.populate({
 				path: 'trackId',
-				model: 'Track'
+				populate: {
+					path: 'album',
+					populate: {
+						path: 'artist',
+						model: 'Artist'
+					}
+				}
 			})
 			.then(results => {
 				res.send(results);

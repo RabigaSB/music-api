@@ -36,7 +36,7 @@ const createRouter = () => {
 		const user = await User.findOne({token});
 
 		const trackHistoryData = req.body;
-		trackHistoryData.userId = user;
+		trackHistoryData.userId = user._id;
 		trackHistoryData.datetime = new Date();
 
 		const trackHistory = new TrackHistory(trackHistoryData);

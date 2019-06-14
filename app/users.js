@@ -5,7 +5,10 @@ const nanoid = require('nanoid');
 
 const createRouter = () => {
 	router.post('/', (req, res) => {
-		const user = new User(req.body);
+		const user = new User({
+			username: req.body.username,
+			password: req.body.password
+		});
 
 		user.save().then(result => {
 			res.send(result);
@@ -41,7 +44,7 @@ const createRouter = () => {
 
 		if (!user) return res.send(success);
 
-		user.token = '';
+		user.token = nanoid();
 		user.save();
 
 		return res.send(success);

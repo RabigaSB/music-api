@@ -13,7 +13,8 @@ const AlbumSchema = new Schema({
 		required: true
 	},
 	year: Number,
-	image: String
+	image: String,
+	published: Boolean
 });
 
 const Album = mongoose.model('Album', AlbumSchema);

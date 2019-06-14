@@ -134,11 +134,13 @@ db.once('open', async () => {
 	const [UserCom, Admin] = await User.create(
 		{
 			username: 'user',
-			password: '123'
+			password: '12',
+			role: 'user'
 		},
 		{
 			username: 'admin',
-			password: '1234'
+			password: '12',
+			role: 'admin'
 		}
 	);
 	await TrackHistory.create(

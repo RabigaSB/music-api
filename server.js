@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const PORT = 8000;
+const PORT = 8001;
 const cors = require('cors');
 const mongoose = require('mongoose');
 const config = require('./config');

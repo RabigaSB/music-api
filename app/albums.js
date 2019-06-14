@@ -45,12 +45,7 @@ router.post('/',[auth, upload.single('image')] , (req, res) => {
 	}
 	else req.body.image = null;
 
-	const album = new Album({
-		name: req.body.name,
-		artist: req.body.artist,
-		year: req.body.year,
-		image: req.body.image,
-	});
+	const album = new Album();
 	album.save()
 		.then(result => res.send(result))
 		.catch(error => res.status(400).send(error));

@@ -14,7 +14,11 @@ const TrackSchema = new Schema({
 	},
 	length: String,
 	trackNumber: Number,
-	published: Boolean
+	published: {
+		type: Boolean,
+		default: false,
+		required: true
+	}
 });
 
 const Track = mongoose.model('Track', TrackSchema);

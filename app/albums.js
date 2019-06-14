@@ -56,6 +56,20 @@ router.post('/',[auth, upload.single('image')] , (req, res) => {
 
 
 //with permit("admin")
+router.get('/admin', [auth, permit('admin')], (req, res) => {
+	let query = null;
+	if (req.query.artist) {
+		query = {
+			artist: req.query.artist
+		};
+	}
+	Album.find(query).sort({year: 1}).populate('artist')
+		.then(results => {
+			res.send(results);
+		})
+		.catch(() => res.sendStatus(500));
+});
+
 router.post('/admin', [auth, permit('admin'), upload.single('image')] , (req, res) => {
 	if (req.file) {
 		req.body.image = req.file.filename;
@@ -94,25 +108,11 @@ router.put('/:id/publish', [auth, permit('admin')], (req, res) => {
 	)
 });
 
-router.get('/admin', [auth, permit('admin')], (req, res) => {
-	let query = null;
-	if (req.query.artist) {
-		query = {
-			artist: req.query.artist
-		};
-	}
-	Album.find(query).sort({year: 1}).populate('artist')
-		.then(results => {
-			res.send(results);
-		})
-		.catch(() => res.sendStatus(500));
-});
-
 router.delete('/:id/admin', [auth, permit('admin')], async (req, res) => {
 	Album.findByIdAndRemove(req.params.id, (err, album) => {
 		if (err) return res.status(500).send(err);
 		const response = {
-			message: "Todo successfully deleted",
+			message: "Album successfully deleted",
 			id: album._id
 		};
 		return res.status(200).send(response);

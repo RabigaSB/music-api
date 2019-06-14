@@ -63,4 +63,27 @@ router.post('/admin', [auth, permit('admin'),  upload.single('image')], (req, re
 		.catch(error => res.status(400).send(error));
 });
 
+router.put('/:id/publish', [auth, permit('admin')], (req, res) => {
+	Artist.findByIdAndUpdate(
+		req.params.id,
+		req.body,
+		{new: true},
+		(err, artist) => {
+			if (err) return res.status(500).send(err);
+			return res.send(artist);
+		}
+	)
+});
+
+router.delete('/:id/admin', [auth, permit('admin')], async (req, res) => {
+	Artist.findByIdAndRemove(req.params.id, (err, artist) => {
+		if (err) return res.status(500).send(err);
+		const response = {
+			message: "Artist successfully deleted",
+			id: artist._id
+		};
+		return res.status(200).send(response);
+	});
+});
+
 module.exports = router;

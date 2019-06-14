@@ -77,5 +77,28 @@ router.post('/admin', auth, (req, res) => {
 		.catch(error => res.status(400).send(error));
 });
 
+router.put('/:id/publish', [auth, permit('admin')], (req, res) => {
+	Track.findByIdAndUpdate(
+		req.params.id,
+		req.body,
+		{new: true},
+		(err, track) => {
+			if (err) return res.status(500).send(err);
+			return res.send(track);
+		}
+	)
+});
+
+router.delete('/:id/admin', [auth, permit('admin')], async (req, res) => {
+	Track.findByIdAndRemove(req.params.id, (err, track) => {
+		if (err) return res.status(500).send(err);
+		const response = {
+			message: "Track successfully deleted",
+			id: track._id
+		};
+		return res.status(200).send(response);
+	});
+});
+
 
 module.exports = router;

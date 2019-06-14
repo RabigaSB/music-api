@@ -51,7 +51,6 @@ router.post('/',[auth, upload.single('image')] , (req, res) => {
 		year: req.body.year,
 		image: req.body.image,
 	});
-	console.log(album);
 	album.save()
 		.then(result => res.send(result))
 		.catch(error => res.status(400).send(error));
@@ -62,16 +61,31 @@ router.post('/',[auth, upload.single('image')] , (req, res) => {
 
 
 //with permit("admin")
+router.post('/admin', [auth, permit('admin'), upload.single('image')] , (req, res) => {
+	if (req.file) {
+		req.body.image = req.file.filename;
+	}
+	else req.body.image = null;
 
-router.get('/:id', [auth, permit('admin')], (req, res) => {
+	const album = new Album({
+		name: req.body.name,
+		artist: req.body.artist,
+		year: req.body.year,
+		image: req.body.image,
+		published: req.body.published
+	});
+	album.save()
+		.then(result => res.send(result))
+		.catch(error => res.status(400).send(error));
+});
 
+router.get('/:id/admin', [auth, permit('admin')], (req, res) => {
 	Album.find({_id: req.params.id}).populate('artist')
 		.then(result => {
 			res.send(result);
 		})
 		.catch(() => res.sendStatus(500));
 });
-
 
 router.put('/:id/publish', [auth, permit('admin')], (req, res) => {
 	Album.findByIdAndUpdate(
@@ -83,8 +97,33 @@ router.put('/:id/publish', [auth, permit('admin')], (req, res) => {
 			return res.send(album);
 		}
 	)
-
-
 });
+
+router.get('/admin', [auth, permit('admin')], (req, res) => {
+	let query = null;
+	if (req.query.artist) {
+		query = {
+			artist: req.query.artist
+		};
+	}
+	Album.find(query).sort({year: 1}).populate('artist')
+		.then(results => {
+			res.send(results);
+		})
+		.catch(() => res.sendStatus(500));
+});
+
+router.delete('/:id/admin', [auth, permit('admin')], async (req, res) => {
+	Album.findByIdAndRemove(req.params.id, (err, album) => {
+		if (err) return res.status(500).send(err);
+		const response = {
+			message: "Todo successfully deleted",
+			id: album._id
+		};
+		return res.status(200).send(response);
+	});
+});
+
+
 
 module.exports = router;

@@ -66,12 +66,7 @@ router.get('/admin', auth, (req, res) => {
 });
 
 router.post('/admin', auth, (req, res) => {
-	const track = new Track({
-		name: req.body.name,
-		album: req.body.album,
-		length: req.body.length,
-		trackNumber: req.body.trackNumber,
-	});
+	const track = new Track(req.body);
 	track.save()
 		.then(result => res.send(result))
 		.catch(error => res.status(400).send(error));

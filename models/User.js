@@ -18,6 +18,13 @@ const UserSchema = new mongoose.Schema({
 		required: true,
 		default: 'user',
 		enum: ['admin', 'user']
+	},
+	facebookId: {
+		type: String
+	},
+	displayName: {
+		type: String,
+		required: true
 	}
 });
 

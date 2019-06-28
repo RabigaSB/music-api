@@ -51,6 +51,14 @@ router.get('/admin', [auth, permit('admin')], (req, res) => {
 		.catch(() => res.sendStatus(500));
 });
 
+router.get('/:id/admin', [auth, permit('admin')], (req, res) => {
+	Artist.find({_id: req.params.id})
+		.then(result => {
+			res.send(result);
+		})
+		.catch(() => res.sendStatus(500));
+});
+
 router.post('/admin', [auth, permit('admin'),  upload.single('image')], (req, res) => {
 	if (req.file) {
 		req.body.image = req.file.filename;

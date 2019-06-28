@@ -72,7 +72,7 @@ router.post('/admin', auth, (req, res) => {
 		.catch(error => res.status(400).send(error));
 });
 
-router.put('/:id/publish', [auth, permit('admin')], (req, res) => {
+router.patch('/:id/publish', [auth, permit('admin')], (req, res) => {
 	Track.findByIdAndUpdate(
 		req.params.id,
 		req.body,

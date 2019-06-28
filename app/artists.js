@@ -71,7 +71,7 @@ router.post('/admin', [auth, permit('admin'),  upload.single('image')], (req, re
 		.catch(error => res.status(400).send(error));
 });
 
-router.put('/:id/publish', [auth, permit('admin')], (req, res) => {
+router.patch('/:id/publish', [auth, permit('admin')], (req, res) => {
 	Artist.findByIdAndUpdate(
 		req.params.id,
 		req.body,

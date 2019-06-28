@@ -96,7 +96,7 @@ router.get('/:id/admin', [auth, permit('admin')], (req, res) => {
 		.catch(() => res.sendStatus(500));
 });
 
-router.put('/:id/publish', [auth, permit('admin')], (req, res) => {
+router.patch('/:id/publish', [auth, permit('admin')], (req, res) => {
 	Album.findByIdAndUpdate(
 		req.params.id,
 		req.body,
